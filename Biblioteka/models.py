@@ -3,7 +3,7 @@ from softdelete.models import SoftDeleteObject
 from django.contrib.auth.models import User
 
 
-class Book(SoftDeleteObject):
+class Book(SoftDeleteObject, models.Model):
     MIEKKA = "miekka"
     TWARDA = "twarda"
     TYPE_OF_BOOK_CHOICES = [
