@@ -24,4 +24,4 @@ class Book(SoftDeleteObject, models.Model):
     zdjecie = models.ImageField()
 
     def __str__(self):
-        return self.tytul
+        return f"{self.tytul} | {self.uzytkownik}"
