@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import ListView, CreateView, UpdateView
 from .models import Book
 from datetime import datetime
 
@@ -33,3 +33,20 @@ class DodajKsiazke(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.uzytkownik = self.request.user
         return super().form_valid(form)
+
+
+class EdycjaKsiazki(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Book
+    fields = ['tytul', 'autor', 'typ', 'wydawnictwo', 'data_premiery', 'data_publikacji', 'liczba_stron', 'zdjecie']
+    template_name = "Biblioteka/edytuj.html"
+
+    def form_valid(self, form):
+        form.instance.uzytkownik = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        book = self.get_object()
+        if self.request.user == book.uzytkownik:
+            return True
+        return False
+
