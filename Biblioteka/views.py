@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView
@@ -50,3 +50,10 @@ class EdycjaKsiazki(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
+def publikuj(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+
+    if request.user == book.uzytkownik:
+        book.data_publikacji = datetime.today()
+        book.save()
+    return HttpResponse(book)
