@@ -7,7 +7,15 @@
 <body>
     {% for book in books %}
         {{ book.tytul }}
+        {{ book.autor }}
+        {{ book.typ }}
+        {{ book.wydawnictwo }}
+        {{ book.data_premiery|date:"j.m.Y" }}{{ book.data_premiery }}
         {{ book.data_publikacji|date:"j.m.Y" }}
+        {{ book.liczba_stron }}
+        {{ book.uzytkownik }}
+    {{ book.zdjecie.url }}
+        <img src="{{ book.zdjecie.url }}">
     {% endfor %}
 </body>
 </html>
