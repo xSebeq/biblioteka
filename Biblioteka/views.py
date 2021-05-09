@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Book
 from datetime import datetime
 
@@ -50,6 +50,7 @@ class EdycjaKsiazki(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
+
 def publikuj(request, book_id):
     book = get_object_or_404(Book, id=book_id)
 
@@ -57,3 +58,14 @@ def publikuj(request, book_id):
         book.data_publikacji = datetime.today()
         book.save()
     return HttpResponse(book)
+
+
+class UsunKsiazke(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Book
+    success_url = "/"
+
+    def test_func(self):
+        book = self.get_object()
+        if self.request.user == book.uzytkownik:
+            return True
+        return False

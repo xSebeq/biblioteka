@@ -7,4 +7,5 @@ urlpatterns = [
     path('dodaj/', views.DodajKsiazke.as_view()),
     path('edytuj/<int:pk>', views.EdycjaKsiazki.as_view()),
     path('publikuj/<int:book_id>', views.publikuj),
+    path('usun/<int:pk>', views.UsunKsiazke.as_view()),
 ]
