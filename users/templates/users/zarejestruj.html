@@ -1,14 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form }}
-        <button type="submit">Zarejestruj</button>
-    </form>
-</body>
-</html>
+{% extends 'Biblioteka/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-6 text-center">
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary mt-2">Zarejestruj</button>
+</form>
+</div>
+</div>
+</div>
+{% endblock content %}

@@ -1,0 +1,39 @@
+{% extends 'Biblioteka/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row ">
+        <form method="POST">
+            {% csrf_token %}
+                <div class="col-md-4 offset-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <img class="card-img-top" src="{{ book.zdjecie.url }}" alt="Card image cap">
+                        <div class="card-body h-100">
+                            <h5>{{ book.tytul }}</h5>
+                            <h6>{{ book.autor }}</h6>
+                            <p class="card-text">
+                                Typ okładki: {{ book.typ }}<br>
+                                Wydawnictwo: {{ book.wydawnictwo }}<br>
+                                Data premiery: {{ book.data_premiery|date:"j.m.Y" }}<br>
+                                Data publikacji: {{ book.data_publikacji|date:"j.m.Y" }}<br>
+                                Liczba stron: {{ book.liczba_stron }}
+                            </p>
+                            <div class="text-end">
+                                <small class="text-muted">{{ book.uzytkownik }}</small>
+                            </div>
+                    </div>
+                          <div class="card-footer align-items-center">
+
+                                <small class="text-muted">
+                                    <p class="text-danger text-center">Czy na pewno chcesz usunąć tę książkę?</p>
+                                    <div class="row">
+                                        <button class="btn btn-outline-danger mb-2" type="submit">Tak</button>
+                                        <a class="btn btn-outline-secondary " href="{% url 'Biblioteka:opublikowane-uzytkownika'%}">Nie</a>
+                                    </div>
+                                </small>
+                          </div>
+                  </div>
+                </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

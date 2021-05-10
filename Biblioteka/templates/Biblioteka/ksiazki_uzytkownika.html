@@ -1,13 +1,68 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "Biblioteka/base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+    {% if books %}
     {% for book in books %}
-        {{ book.tytul }}
-        {{ book.data_publikacji|date:"j.m.Y" }}
+            <div class="col-md-4">
+                <div class="card mb-4 box-shadow">
+                    <img class="card-img-top" src="{{ book.zdjecie.url }}" alt="Card image cap">
+                    <div class="card-body h-100">
+                        <h5>{{ book.tytul }}</h5>
+                        <h6>{{ book.autor }}</h6>
+                        <p class="card-text">
+                            Typ okładki: {{ book.typ }}<br>
+                            Wydawnictwo: {{ book.wydawnictwo }}<br>
+                            Data premiery: {{ book.data_premiery|date:"j.m.Y" }}<br>
+                            Data publikacji: {{ book.data_publikacji|date:"j.m.Y" }}<br>
+                            Liczba stron: {{ book.liczba_stron }}
+                        </p>
+                        <div class="text-end">
+                            <small class="text-muted">{{ book.uzytkownik }}</small>
+                        </div>
+                </div>
+                      <div class="card-footer align-items-center">
+                            <small class="text-muted">
+                                <a href="{% url 'Biblioteka:edytuj' book.id %}" class="link-warning"><p class="text-center">Edytuj</p></a>
+                                <a href="{% url 'Biblioteka:usun' book.id %}" class="link-danger"><p class="text-center">Usuń</p></a>
+                                {% if not book.data_publikacji %}
+                                    <a href="{% url 'Biblioteka:publikuj' book.id %}" class="link-primary"><p class="text-center">Publikuj</p></a>
+                                {% endif %}
+                            </small>
+                      </div>
+              </div>
+            </div>
     {% endfor %}
-</body>
-</html>
+
+    {% else %}
+        <h2>Brak dodanych książek</h2>
+    {% endif %}
+            </div>
+</div>
+
+    {% if is_paginated %}
+    <div class="row-12">
+        <div class="col text-center">
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-primary mb-4" href="?page=1">Pierwsza strona</a>
+        <a class="btn  btn-outline-primary mb-4" href="?page={{ page_obj.previous_page_number }}">Poprzednia</a>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="btn btn-outline-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.next_page_number }}">Następna</a>
+        <a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.paginator.num_pages }}">Ostatnia strona</a>
+      {% endif %}
+        </div>
+    </div>
+    {% endif %}
+{% endblock content %}

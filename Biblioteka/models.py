@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 
 
 class Book(SoftDeleteObject, models.Model):
-    MIEKKA = "miekka"
-    TWARDA = "twarda"
+    MIEKKA = "Miękka"
+    TWARDA = "Twarda"
     TYPE_OF_BOOK_CHOICES = [
         (MIEKKA, "Miękka"),
         (TWARDA, "Twarda"),
@@ -21,7 +21,7 @@ class Book(SoftDeleteObject, models.Model):
     data_publikacji = models.DateField(default=None, null=True, blank=True)
     liczba_stron = models.IntegerField()
     uzytkownik = models.ForeignKey(User, on_delete=models.CASCADE)
-    zdjecie = models.ImageField()
+    zdjecie = models.ImageField(upload_to='book_pics')
 
     def __str__(self):
         return f"{self.tytul} | {self.uzytkownik}"
